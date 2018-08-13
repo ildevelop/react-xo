@@ -1,26 +1,7 @@
 import React from 'react';
 import BoardComponent from "./BoardComponent";
+import {checkWinner} from './checkWinner'
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-
-}
 
 class GameComponent extends React.Component {
   constructor() {
@@ -37,7 +18,7 @@ class GameComponent extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (calculateWinner(squares) || squares[i]) {
+    if (checkWinner(squares) || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
@@ -60,12 +41,12 @@ class GameComponent extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winner = checkWinner(current.squares);
     const moves = history.map((step, move) => {
       const desc = move ? "Step №" + move : "Start game";
       return (
         <li key={move}>
-          <a href="#" onClick={() => this.jumpTo(move)}> {desc} </a>
+          <a href="#" onClick={this.jumpTo.bind(this,move)}> {desc} </a>
         </li>
       );
     });
