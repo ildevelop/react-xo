@@ -28,7 +28,7 @@
 .buttonGame{
     display: flex;
     flex-direction: row;
-
+    padding: 10px 0;
 }
 .headerGame{
     display: flex;
@@ -37,9 +37,9 @@
 }
 @media only screen and (max-width: 640px) {
 
-    .list-group .list-group-item {
-        max-width: 95%;
+    .list-group, .list-group-item {
+        max-width: 96%;
         padding: 1%;
-        margin: 0;
+        margin: 2%;
     }
 }
