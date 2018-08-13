@@ -4,10 +4,6 @@ body {
   font-family: sans-serif;
 }
 
-ol, ul {
-  padding-left: 30px;
-}
-
 .board-row:after {
   clear: both;
   content: "";
@@ -37,12 +33,3 @@ ol, ul {
   outline: none;
 }
 
-
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
-}

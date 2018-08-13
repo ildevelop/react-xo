@@ -1,7 +1,8 @@
 import React from 'react';
 import BoardComponent from "./BoardComponent";
 import {checkWinner} from './checkWinner'
-
+import {Button, ListGroup, ListGroupItem} from 'reactstrap';
+import './Game.css'
 
 class GameComponent extends React.Component {
   constructor() {
@@ -43,10 +44,10 @@ class GameComponent extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = checkWinner(current.squares);
     const moves = history.map((step, move) => {
-      const desc = move ? "Step №" + move : "Start game";
+      const desc = "Step №" + move;
       return (
         <li key={move}>
-          <a href="#" onClick={this.jumpTo.bind(this,move)}> {desc} </a>
+          <a href="#" onClick={this.jumpTo.bind(this, move)}> {desc} </a>
         </li>
       );
     });
@@ -55,26 +56,34 @@ class GameComponent extends React.Component {
     if (winner) {
       status = "winner: " + winner;
     } else if (this.state.stepNumber === 9 && winner === null) {
-      status = "GameComponent Draw";
+      status = "Game Draw";
     } else {
       status = "now play: " + (this.state.xIsNext ? "X" : "O");
     }
     return (
 
-      <div className="game">
-        <div className="game-board">
-          <BoardComponent
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div> {status} </div>
-          <ol> {moves} </ol>
-        </div>
-      </div>
+      <ListGroup>
+        <ListGroupItem key={1} className="text-center">
+          <div>
+            <div> {status} </div>
+            <BoardComponent
+              squares={current.squares}
+              onClick={i => this.handleClick(i)}
+            />
+          </div>
+          <div>
+            <div> History: </div>
+             {moves}
+          </div>
+          <div className="buttonGame">
+            <Button onClick={this.jumpTo.bind(this, 0)} color="info">Start new game</Button>
+          </div>
+        </ListGroupItem>
+      </ListGroup>
+
 
     );
   }
 }
+
 export default GameComponent;
