@@ -1,5 +1,5 @@
 import React from 'react';
-import Board from "./Board";
+import BoardComponent from "./BoardComponent";
 
 function calculateWinner(squares) {
   const lines = [
@@ -82,7 +82,7 @@ class GameComponent extends React.Component {
 
       <div className="game">
         <div className="game-board">
-          <Board
+          <BoardComponent
             squares={current.squares}
             onClick={i => this.handleClick(i)}
           />
