@@ -10,8 +10,28 @@ class GameComponent extends React.Component {
     this.state = {
       history: [{squares: Array(9).fill(null)}],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      timeCount: 0,
+      startGame: false
     };
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => {
+        if (this.state.startGame) {
+          let tim = this.state.timeCount + 1;
+          this.setState({timeCount: tim});
+        }
+      },
+      1000
+    );
+
+
   }
 
   handleClick(i) {
@@ -28,15 +48,43 @@ class GameComponent extends React.Component {
         {squares: squares}
       ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
+      startGame: true
     });
   }
 
   jumpTo(step) {
+    if(step===0){
+      this.setState({
+        stepNumber: step,
+        xIsNext: (step % 2) === 0,
+        timeCount: 0,
+        startGame: false
+      });
+    }
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0
     });
+  }
+
+  secondsToTime(secs) {
+    if (secs) {
+      let hours = Math.floor(secs / (60 * 60));
+      let divisor_for_minutes = secs % (60 * 60);
+      let minutes = Math.floor(divisor_for_minutes / 60);
+      let divisor_for_seconds = divisor_for_minutes % 60;
+      let seconds = Math.ceil(divisor_for_seconds);
+
+      let obj = {
+        "h": hours < 10 ? '0' + hours : hours,
+        "m": minutes < 10 ? '0' + minutes : minutes,
+        "s": seconds < 10 ? '0' + seconds : seconds
+      };
+      return <div>{obj.h}:{obj.m}:{obj.s}</div>;
+    }
+    return <div>00:00:00</div>
+
   }
 
   render() {
@@ -46,34 +94,36 @@ class GameComponent extends React.Component {
     const moves = history.map((step, move) => {
       const desc = "Step №" + move;
       return (
-        <li key={move}>
-          <a href="#" onClick={this.jumpTo.bind(this, move)}> {desc} </a>
-        </li>
+        <div key={move}>
+          <Button outline color="primary" onClick={this.jumpTo.bind(this, move)}>{desc} </Button>
+        </div>
       );
     });
 
     let status;
     if (winner) {
       status = "winner: " + winner;
+      clearInterval(this.timerID);
     } else if (this.state.stepNumber === 9 && winner === null) {
       status = "Game Draw";
+      clearInterval(this.timerID);
     } else {
-      status = "now play: " + (this.state.xIsNext ? "X" : "O");
+      status = "now player: " + (this.state.xIsNext ? "X" : "O");
     }
     return (
 
       <ListGroup>
-        <ListGroupItem key={1} className="text-center">
+        <ListGroupItem key={1}>
           <div>
-            <div> {status} </div>
+            <div className="headerGame">EASY GAME{this.secondsToTime(this.state.timeCount)} {status} </div>
             <BoardComponent
               squares={current.squares}
               onClick={i => this.handleClick(i)}
             />
           </div>
           <div>
-            <div> History: </div>
-             {moves}
+            <div> History:</div>
+            {moves}
           </div>
           <div className="buttonGame">
             <Button onClick={this.jumpTo.bind(this, 0)} color="info">Start new game</Button>

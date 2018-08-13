@@ -15,18 +15,17 @@ body {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: #94ff92;
+  border: 1px solid #5e7f99;
   float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  height: 45px;
+  margin: 0;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 45px;
 }
 
 .square:focus {
